@@ -1,30 +1,28 @@
 #include <stdio.h>
-#include "headers/PQ.h"
-#include "headers/item.h"
+#include "headers/rede.h"
 
-int main() {
+int main(int argc, char *argv[]){
+    if(argc < 2)
+		exit(printf("ERROR: Missing arguments!\n"));
 
-    // inicializando a PQ
-    PQ *pq = PQ_init(10);
+	char* input_file_path = argv[1];
+	char* output_file_path = argv[2];
 
-    // inserindo alguns elementos na PQ
-    PQ_insert(pq, item_create(1, 10.0));
-    PQ_insert(pq, item_create(6, 5.0));
-    PQ_insert(pq, item_create(3, 3.0));
-    PQ_insert(pq, item_create(4, 4.0));
-    PQ_insert(pq, item_create(7, 7.0));
-    PQ_insert(pq, item_create(2, 1.0));
+	FILE *input = fopen(input_file_path, "r");
+	if(!input)
+		exit(printf("ERROR: File %s did not open", input_file_path));
 
-    // alterando a prioridade de alguns elementos
-    PQ_decrease_key(pq, 4, 0.5); // agora o nó 4 tem valor 0.5, sua posição no heap deve mudar
-    PQ_decrease_key(pq, 6, 0.1); // agora o nó 6 tem valor 0.1, sua posição no heap deve mudar
+    FILE *output = fopen(output_file_path, "w");
+    if(!output)
+        exit(printf("ERROR: File %s did not open", output_file_path));
 
-    // removendo o menor elemento e imprimindo
-    while (!PQ_empty(pq)) {
-        Item *p = PQ_delmin(pq);
-        printf("Identificador %d, prioridade %lf\n", item_getId(p), item_getValue(p));
-        free(p);
-    }
+    Rede *r = rede_create_from_file(input);
 
-    PQ_finish(pq);
+    rede_calc_inflacao_RTT(r, output);
+
+    rede_destroy(r);
+    fclose(output);
+	fclose(input);
+    return 0;
 }
+

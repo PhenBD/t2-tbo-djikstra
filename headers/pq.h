@@ -8,7 +8,7 @@
 typedef struct pq PQ;
 
 // cria uma min PQ com capacidade maxN
-PQ *PQ_init(int maxN);
+PQ *PQ_create(int maxN);
 
 // troca dois elementos
 static void PQ_swap(PQ *pq, int i, int j);
@@ -28,8 +28,11 @@ Item *PQ_delmin(PQ *pq);
 // Retorna Item com menor campo 'value' da PQ
 Item *PQ_min(PQ *pq);
 
-// Muda a prioridade do nó com identificador 'id' para 'value'
-void PQ_decrease_key(PQ *pq, int id, double value);
+// Muda a prioridade do nó com identificador 'key' para 'value'
+void PQ_decrease_key(PQ *pq, int key, double value);
+
+// Retorna True se a PQ contém o nó com identificador 'key'
+bool PQ_contains(PQ *pq, int key);
 
 // Retorna True se a PQ não tem elementos
 bool PQ_empty(PQ *pq);
@@ -38,7 +41,7 @@ bool PQ_empty(PQ *pq);
 int  PQ_size(PQ *pq);
 
 // Libera memória
-void PQ_finish(PQ *pq);
+void PQ_destroy(PQ *pq);
 
 // Imprime a PQ
 void PQ_print(PQ *pq);

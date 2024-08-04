@@ -6,10 +6,10 @@
 typedef struct item Item;
 
 // cria um nó
-Item *item_create(int id, double value);
+Item *item_create(int key, double value);
 
 // retorna identificador do nó
-int item_getId(Item *i);
+int item_getKey(Item *i);
 
 // retorna valor do nó
 double item_getValue(Item *i);

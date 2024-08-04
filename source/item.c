@@ -5,15 +5,15 @@ struct item{
     double value;     // valor associado ao nó
 };
 
-Item *item_create(int id, double value) {
+Item *item_create(int key, double value) {
     Item *t = malloc(sizeof(Item));
-    t->key = id;
+    t->key = key;
     t->value = value;
     
     return t;
 }
 
-int item_getId(Item *i){
+int item_getKey(Item *i){
     return i->key;
 }
 
