@@ -32,13 +32,31 @@ Rede *rede_create_from_file(FILE *input){
     return r;
 }
 
+int edge_hash(HashTable *h, void *key)
+{
+    Edge *e = (Edge *)key;
+    // 83 e 97 sao primos e o operador "^" é o XOR bit a bit
+    return ((edge_src(e) * 83) ^ (edge_dest(e) * 97)) % hash_table_size(h);
+}
+
+int edge_cmp(void *a, void *b)
+{
+    Edge *aa = (Edge *)a;
+    Edge *bb = (Edge *)b;
+
+    if (edge_src(aa) == edge_src(bb) && edge_dest(aa) == edge_dest(bb))
+        return 0;
+    else
+        return 1;
+}
+
 void rede_calc_inflacao_RTT(Rede *r, FILE *output){
     double RTT_real = 0, *RTT_estimados = malloc(r->qtd_monitores * sizeof(double));
     double *dist_servidor, *dist_monitor, *dist_cliente;
     double rtt_servidor_monitor, rtt_monitor_cliente, rtt_cliente_servidor;
     double inflacao_RTT = 0;
     double min_RTT_estimado = INFINITY;
-    // PQ *RTT_estimados_pq = PQ_create(r->qtd_servidores * r->qtd_clientes);
+    PQ *RTT_estimados_pq = PQ_create(r->qtd_servidores * r->qtd_clientes, edge_hash, edge_cmp);
 
     for (int i = 0; i < r->qtd_servidores; i++)
     {
@@ -71,17 +89,28 @@ void rede_calc_inflacao_RTT(Rede *r, FILE *output){
             }
             inflacao_RTT = min_RTT_estimado / RTT_real;
 
-            // PQ_insert(RTT_estimados_pq, item_create(i * j, inflacao_RTT));
+            PQ_insert(RTT_estimados_pq, item_create(edge_create(r->servidores[i], r->clientes[j], inflacao_RTT), inflacao_RTT));
 
             min_RTT_estimado = INFINITY;
-
-            fprintf(output, "%d %d %.16lf\n", r->servidores[i], r->clientes[j], inflacao_RTT);
 
             free(dist_cliente);
         }
         free(dist_servidor);
     }
 
+    while (!PQ_empty(RTT_estimados_pq))
+    {
+        Item *min = PQ_delmin(RTT_estimados_pq);
+        Edge *e = (Edge *)item_get_key(min);
+        double value = item_get_value(min);
+
+        fprintf(output, "%d %d %.16lf\n", edge_src(e), edge_dest(e), value);
+
+        edge_destroy(e);
+        free(min);
+    }
+
+    PQ_destroy(RTT_estimados_pq);
     free(RTT_estimados);
 }
 

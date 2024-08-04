@@ -29,16 +29,36 @@ Graph* graph_create(int qtd_vertices, int qtd_edges, FILE *edges){
     return g;
 }
 
+int int_hash(HashTable *h, void *key)
+{
+    int *k = (int *)key;
+    return (*k * 83) % hash_table_size(h);
+}
+
+int int_cmp(void *a, void *b)
+{
+    int *aa = (int *)a;
+    int *bb = (int *)b;
+
+    if (*aa == *bb)
+        return 0;
+    else
+        return 1;
+}
+
 double *graph_dijkstra(Graph *g, int src){
     double *dist = malloc(g->qtd_vertices * sizeof(double));
-    PQ *pq = PQ_create(g->qtd_vertices);
+    PQ *pq = PQ_create(g->qtd_vertices, int_hash, int_cmp);
 
     for(int i = 0; i < g->qtd_vertices; i++){
         dist[i] = INFINITY;
     }
     dist[src] = 0;
     
-    Item *s = item_create(src, 0);
+    int *src_pointer = malloc(sizeof(int));
+    *src_pointer = src;
+
+    Item *s = item_create(src_pointer, 0);
     PQ_insert(pq, s);
 
     while (!(PQ_empty(pq)))
@@ -47,21 +67,24 @@ double *graph_dijkstra(Graph *g, int src){
         for(int i = 0; i < g->qtd_edges; i++){
             Edge *e = g->edges[i];
 
-            if(edge_src(e) == item_getKey(v)){
+            if(edge_src(e) == *(int *)item_get_key(v)){
                 if(dist[edge_dest(e)] > dist[edge_src(e)] + edge_weight(e)){
                     dist[edge_dest(e)] = dist[edge_src(e)] + edge_weight(e);
 
-                    if(PQ_contains(pq, edge_dest(e))){
-                        PQ_decrease_key(pq, edge_dest(e), dist[edge_dest(e)]);
-                    }else{
-                        Item *w = item_create(edge_dest(e), dist[edge_dest(e)]);
+                    int *dest_pointer = malloc(sizeof(int));
+                    *dest_pointer = edge_dest(e);
+
+                    if(PQ_contains(pq, dest_pointer)){
+                        PQ_decrease_key(pq, dest_pointer, dist[edge_dest(e)]);
+                    } else {
+                        Item *w = item_create(dest_pointer, dist[edge_dest(e)]);
                         PQ_insert(pq, w);
                     }
                 }
             }
         }
 
-        free(v);
+        item_destroy(v);
     }
     
     PQ_destroy(pq);

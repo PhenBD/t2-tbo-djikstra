@@ -4,11 +4,18 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "item.h"
+#include "hash.h"
 
 typedef struct pq PQ;
 
 // cria uma min PQ com capacidade maxN
-PQ *PQ_create(int maxN);
+PQ *PQ_create(int maxN, HashFunction hash_fn, CmpFunction cmp_fn);
+
+// retorna o identificador do nó na posição i
+void *PQ_get_key(PQ *pq, int i);
+
+// compara nós, por valor
+int PQ_compare_values(PQ *pq, int i, int j);
 
 // troca dois elementos
 static void PQ_swap(PQ *pq, int i, int j);
@@ -29,10 +36,10 @@ Item *PQ_delmin(PQ *pq);
 Item *PQ_min(PQ *pq);
 
 // Muda a prioridade do nó com identificador 'key' para 'value'
-void PQ_decrease_key(PQ *pq, int key, double value);
+void PQ_decrease_key(PQ *pq, void *key, double value);
 
 // Retorna True se a PQ contém o nó com identificador 'key'
-bool PQ_contains(PQ *pq, int key);
+bool PQ_contains(PQ *pq, void *key);
 
 // Retorna True se a PQ não tem elementos
 bool PQ_empty(PQ *pq);
@@ -42,8 +49,5 @@ int  PQ_size(PQ *pq);
 
 // Libera memória
 void PQ_destroy(PQ *pq);
-
-// Imprime a PQ
-void PQ_print(PQ *pq);
 
 #endif

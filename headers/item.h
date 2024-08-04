@@ -6,21 +6,24 @@
 typedef struct item Item;
 
 // cria um nó
-Item *item_create(int key, double value);
+Item *item_create(void *key, double value);
 
 // retorna identificador do nó
-int item_getKey(Item *i);
+void *item_get_key(Item *i);
 
 // retorna valor do nó
-double item_getValue(Item *i);
+double item_get_value(Item *i);
 
 // altera valor do nó
-void item_setValue(Item *i, double value);
+void item_set_value(Item *i, double value);
 
 // compara nós, por valor
 int item_more(Item *a, Item *b);
 
 // troca dois nós
 void item_exch(Item *a, Item *b);
+
+// libera memória do nó
+void item_destroy(Item *i);
 
 #endif
