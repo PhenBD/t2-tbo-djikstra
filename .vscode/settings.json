@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "pq.h": "c",
+        "type_traits": "c",
+        "stdio.h": "c"
+    }
+}
