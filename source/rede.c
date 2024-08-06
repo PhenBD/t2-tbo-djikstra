@@ -38,10 +38,10 @@ void rede_calc_inflacao_RTT(Rede *r, FILE *output){
     double rtt_servidor_monitor, rtt_monitor_cliente, rtt_cliente_servidor;
     double inflacao_RTT = 0;
     double min_RTT_estimado = INFINITY;
-    // PQ *RTT_estimados_pq = PQ_create(r->qtd_servidores * r->qtd_clientes);
+    Edge **ordered = malloc((r->qtd_servidores * r->qtd_clientes) * sizeof(Edge*));
 
     for (int i = 0; i < r->qtd_servidores; i++)
-    {
+    {   
         dist_servidor = graph_dijkstra(r->grafo, r->servidores[i]);
 
         for (int j = 0; j < r->qtd_clientes; j++)
@@ -71,17 +71,24 @@ void rede_calc_inflacao_RTT(Rede *r, FILE *output){
             }
             inflacao_RTT = min_RTT_estimado / RTT_real;
 
-            // PQ_insert(RTT_estimados_pq, item_create(i * j, inflacao_RTT));
-
             min_RTT_estimado = INFINITY;
 
-            fprintf(output, "%d %d %.16lf\n", r->servidores[i], r->clientes[j], inflacao_RTT);
+            ordered[i * r->qtd_clientes + j] = edge_create(r->servidores[i], r->clientes[j], inflacao_RTT);
+            // printf("%d %d %.16lf\n", r->servidores[i], r->clientes[j], inflacao_RTT);
 
             free(dist_cliente);
         }
         free(dist_servidor);
     }
 
+    qsort(ordered, r->qtd_servidores * r->qtd_clientes, sizeof(Edge *), edge_weight_compare);
+
+    for(int i = 0; i < r->qtd_servidores * r->qtd_clientes; i++){
+        fprintf(output, "%d %d %.16lf\n", edge_src(ordered[i]), edge_dest(ordered[i]), edge_weight(ordered[i]));
+        edge_destroy(ordered[i]);
+    }
+
+    free(ordered);
     free(RTT_estimados);
 }
 

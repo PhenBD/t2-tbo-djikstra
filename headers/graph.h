@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
-#include "edge.h"
+#include "vertex.h"
 #include "pq.h"
 #include <math.h>
 
