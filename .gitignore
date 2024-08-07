@@ -1,0 +1,5 @@
+# Ignorar arquivos de configuração do editor
+.vscode/
+
+# Ignorar arquivos de comparação
+/answer/
