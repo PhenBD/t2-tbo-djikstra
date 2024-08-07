@@ -2,6 +2,7 @@ all: object compile
 
 object:
 	mkdir -p objects
+	mkdir -p output
 	gcc -g -c main.c source/*.c -Iheaders && mv *.o objects/
 
 compile:
@@ -14,4 +15,4 @@ valgrind:
 	valgrind ./trab2 in-exemplos/3.txt 5 saida.txt
 
 clean:
-	rm -r trab2 objects
+	rm -r trab2 objects output
