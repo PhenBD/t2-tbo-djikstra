@@ -34,51 +34,50 @@ Rede *rede_create_from_file(FILE *input){
 
 void rede_calc_inflacao_RTT(Rede *r, FILE *output){
     double RTT_real = 0, *RTT_estimados = malloc(r->qtd_monitores * sizeof(double));
-    double *dist_servidor, *dist_monitor, *dist_cliente;
+    double **dist_servidor = malloc(r->qtd_servidores * sizeof(double*));
+    double **dist_monitor = malloc(r->qtd_monitores * sizeof(double*));
+    double **dist_cliente = malloc(r->qtd_clientes * sizeof(double*));
     double rtt_servidor_monitor, rtt_monitor_cliente, rtt_cliente_servidor;
     double inflacao_RTT = 0;
     double min_RTT_estimado = INFINITY;
     Edge **ordered = malloc((r->qtd_servidores * r->qtd_clientes) * sizeof(Edge*));
 
     for (int i = 0; i < r->qtd_servidores; i++)
-    {   
-        dist_servidor = graph_dijkstra(r->grafo, r->servidores[i]);
+        dist_servidor[i] = graph_dijkstra(r->grafo, r->servidores[i]);
 
+    for (int j = 0; j < r->qtd_clientes; j++)
+        dist_cliente[j] = graph_dijkstra(r->grafo, r->clientes[j]);
+
+    for (int k = 0; k < r->qtd_monitores; k++)
+        dist_monitor[k] = graph_dijkstra(r->grafo, r->monitores[k]);
+
+    for (int i = 0; i < r->qtd_servidores; i++){
         for (int j = 0; j < r->qtd_clientes; j++)
         {
-            dist_cliente = graph_dijkstra(r->grafo, r->clientes[j]);
-
-            rtt_cliente_servidor = dist_servidor[r->clientes[j]] + dist_cliente[r->servidores[i]];
+            rtt_cliente_servidor = dist_servidor[i][r->clientes[j]] + dist_cliente[j][r->servidores[i]];
             RTT_real = rtt_cliente_servidor;
-
+            
             for (int k = 0; k < r->qtd_monitores; k++)
             {
-                dist_monitor = graph_dijkstra(r->grafo, r->monitores[k]);
-
-                rtt_servidor_monitor = (dist_servidor[r->monitores[k]] + dist_monitor[r->servidores[i]]);
-                rtt_monitor_cliente = (dist_monitor[r->clientes[j]] + dist_cliente[r->monitores[k]]);
+                rtt_servidor_monitor = (dist_servidor[i][r->monitores[k]] + dist_monitor[k][r->servidores[i]]);
+                rtt_monitor_cliente = (dist_monitor[k][r->clientes[j]] + dist_cliente[j][r->monitores[k]]);
 
                 RTT_estimados[k] = rtt_servidor_monitor + rtt_monitor_cliente;
-
-                free(dist_monitor);
             }
-
+            
             for (int k = 0; k < r->qtd_monitores; k++)
             {
                 if(RTT_estimados[k] < min_RTT_estimado){
                     min_RTT_estimado = RTT_estimados[k];
                 }
             }
+
             inflacao_RTT = min_RTT_estimado / RTT_real;
 
             min_RTT_estimado = INFINITY;
 
             ordered[i * r->qtd_clientes + j] = edge_create(r->servidores[i], r->clientes[j], inflacao_RTT);
-            // printf("%d %d %.16lf\n", r->servidores[i], r->clientes[j], inflacao_RTT);
-
-            free(dist_cliente);
         }
-        free(dist_servidor);
     }
 
     qsort(ordered, r->qtd_servidores * r->qtd_clientes, sizeof(Edge *), edge_weight_compare);
@@ -88,6 +87,18 @@ void rede_calc_inflacao_RTT(Rede *r, FILE *output){
         edge_destroy(ordered[i]);
     }
 
+    for (int i = 0; i < r->qtd_servidores; i++)
+        free(dist_servidor[i]);
+
+    for (int j = 0; j < r->qtd_clientes; j++)
+        free(dist_cliente[j]);
+
+    for (int k = 0; k < r->qtd_monitores; k++)
+        free(dist_monitor[k]);
+
+    free(dist_servidor);
+    free(dist_cliente);
+    free(dist_monitor);
     free(ordered);
     free(RTT_estimados);
 }
