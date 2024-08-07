@@ -3,3 +3,9 @@
 
 # Ignorar arquivos de comparação
 /answer/
+
+# Ignorar diretórios de build
+/objects/
+
+# Ignorar arquivos de execução
+trab2
