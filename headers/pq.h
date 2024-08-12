@@ -7,43 +7,103 @@
 
 typedef struct pq PQ;
 
-// cria uma min PQ com capacidade maxN
+/**
+ * Cria uma nova fila de prioridade.
+ *
+ * @param maxN O tamanho máximo da fila de prioridade.
+ * @return Um ponteiro para a nova fila de prioridade.
+ */
 PQ *PQ_create(int maxN);
 
-// troca dois elementos
+/**
+ * Troca dois elementos na fila de prioridade.
+ *
+ * @param pq A fila de prioridade.
+ * @param i O índice do primeiro elemento.
+ * @param j O índice do segundo elemento.
+ */
 static void PQ_swap(PQ *pq, int i, int j);
 
-// sobe o nó k
+/**
+ * Corrige a ordem da fila de prioridade subindo o elemento na posição k.
+ *
+ * @param pq A fila de prioridade.
+ * @param k O índice do elemento a ser corrigido.
+ */
 void PQ_fix_up(PQ *pq, int k);
 
-// desce o nó k
+/**
+ * Corrige a ordem da fila de prioridade descendo o elemento na posição k.
+ *
+ * @param pq A fila de prioridade.
+ * @param sz O tamanho atual da fila de prioridade.
+ * @param k O índice do elemento a ser corrigido.
+ */
 void PQ_fix_down(PQ *pq, int sz, int k);
 
-// Insere Item na PQ. A maior prioridade é a do Item com menor campo 'value'
+/**
+ * Insere um novo item na fila de prioridade.
+ *
+ * @param pq A fila de prioridade.
+ * @param v O item a ser inserido.
+ */
 void PQ_insert(PQ* pq, Item *v);
 
-// Remove Item com menor campo 'value' da PQ
+/**
+ * Remove e retorna o item de menor prioridade da fila de prioridade.
+ *
+ * @param pq A fila de prioridade.
+ * @return O item de menor prioridade.
+ */
 Item *PQ_delmin(PQ *pq);
 
-// Retorna Item com menor campo 'value' da PQ
+/**
+ * Retorna o item de menor prioridade da fila de prioridade sem removê-lo.
+ *
+ * @param pq A fila de prioridade.
+ * @return O item de menor prioridade.
+ */
 Item *PQ_min(PQ *pq);
 
-// Muda a prioridade do nó com identificador 'key' para 'value'
+/**
+ * Diminui o valor de um item na fila de prioridade.
+ *
+ * @param pq A fila de prioridade.
+ * @param key A chave do item a ser atualizado.
+ * @param value O novo valor do item.
+ */
 void PQ_decrease_key(PQ *pq, int key, double value);
 
-// Retorna True se a PQ contém o nó com identificador 'key'
+/**
+ * Verifica se a fila de prioridade contém um item com a chave especificada.
+ *
+ * @param pq A fila de prioridade.
+ * @param key A chave do item a ser verificado.
+ * @return true se a fila de prioridade contém o item, false caso contrário.
+ */
 bool PQ_contains(PQ *pq, int key);
 
-// Retorna True se a PQ não tem elementos
+/**
+ * Verifica se a fila de prioridade está vazia.
+ *
+ * @param pq A fila de prioridade.
+ * @return true se a fila de prioridade está vazia, false caso contrário.
+ */
 bool PQ_empty(PQ *pq);
 
-// Número de elementos na PQ
+/**
+ * Retorna o tamanho atual da fila de prioridade.
+ *
+ * @param pq A fila de prioridade.
+ * @return O tamanho atual da fila de prioridade.
+ */
 int  PQ_size(PQ *pq);
 
-// Libera memória
+/**
+ * Libera a memória alocada para a fila de prioridade.
+ *
+ * @param pq A fila de prioridade a ser destruída.
+ */
 void PQ_destroy(PQ *pq);
-
-// Imprime a PQ
-void PQ_print(PQ *pq);
 
 #endif

@@ -7,5 +7,8 @@
 # Ignorar diretórios de build
 /objects/
 
+# Ignorar arquivos de saída
+/output/
+
 # Ignorar arquivos de execução
 trab2

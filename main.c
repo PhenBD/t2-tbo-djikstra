@@ -17,26 +17,20 @@ int main(int argc, char *argv[]){
     if(!output)
         exit(printf("ERROR: File %s did not open", output_file_path));
 
-    /*
     clock_t start, end;
     double cpu_time_used;
 
     start = clock();
-    */
     Rede *r = rede_create_from_file(input);
-    /*
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Tempo de execução rede_create_from_file: %f segundos\n", cpu_time_used);
 
     start = clock();
-    */
     rede_calc_inflacao_RTT(r, output);
-    /*
     end = clock();
     cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
     printf("Tempo de execução rede_calc_inflacao_RTT: %f segundos\n", cpu_time_used);
-    */
 
     rede_destroy(r);
     fclose(output);

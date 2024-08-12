@@ -97,10 +97,3 @@ void PQ_destroy(PQ *pq) {
     free(pq);
 }
 
-void PQ_print(PQ *pq) {
-    for (int i = 1; i <= pq->size; i++) {
-        printf("Slot %d: Identificador %d, prioridade %lf\n", i, item_getKey(pq->nodes[i]), item_getValue(pq->nodes[i]));
-    }
-}
-
-

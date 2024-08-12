@@ -54,10 +54,11 @@ double *graph_dijkstra(Graph *g, int src){
             Edge *e = vertex_get_edge(g->vertices[u], i);
             int dest = edge_dest(e);
             int src = edge_src(e);
+            double weight = edge_weight(e);
 
             if(src == item_getKey(v)){
-                if(dist[dest] > dist[src] + edge_weight(e)){
-                    dist[dest] = dist[src] + edge_weight(e);
+                if(dist[dest] > dist[src] + weight){
+                    dist[dest] = dist[src] + weight;
 
                     if(PQ_contains(pq, dest)){
                         PQ_decrease_key(pq, dest, dist[dest]);
@@ -75,12 +76,6 @@ double *graph_dijkstra(Graph *g, int src){
     free(visited);
     PQ_destroy(pq);
     return dist;
-}
-
-void graph_print(Graph *g){
-    for(int i = 0; i < g->qtd_edges; i++){
-        // printf("Aresta %d: %d -> %d, peso %lf\n", i, edge_src(g->edges[i]), edge_dest(g->edges[i]), edge_weight(g->edges[i]));
-    }
 }
 
 void graph_destroy(Graph *g) {
