@@ -12,9 +12,9 @@ A estrutura do projeto é organizada da seguinte forma:
 │ ├── N100_S20_C30_M5.txt 
 │ ├── N1000_S50_C300_M10.txt 
 │ ├── N10000_S50_C300_M10.txt 
-│ ├── N5.txt 
+│ └── N5.txt 
 ├── output/ 
-│ ├── (arquivos de saída)
+│ └── (arquivos de saída)
 ├── headers/ 
 │ ├── edge.h 
 │ ├── forward_list.h 
@@ -22,7 +22,7 @@ A estrutura do projeto é organizada da seguinte forma:
 │ ├── item.h 
 │ ├── pq.h 
 │ ├── rede.h 
-│ ├── vertex.h 
+│ └── vertex.h 
 ├── objects/ 
 │ ├── edge.o 
 │ ├── forward_list.o 
@@ -31,7 +31,7 @@ A estrutura do projeto é organizada da seguinte forma:
 │ ├── main.o 
 │ ├── pq.o 
 │ ├── rede.o 
-│ ├── vertex.o 
+│ └── vertex.o 
 ├── source/
 │ ├── edge.c 
 │ ├── forward_list.c 
@@ -40,10 +40,10 @@ A estrutura do projeto é organizada da seguinte forma:
 │ ├── main.c
 │ ├── pq.c
 │ ├── rede.c
-│ ├── vertex.c
+│ └── vertex.c
 ├── main.c 
 ├── makefile 
-├── trab2
+└── trab2
 
 ### Descrição dos Diretórios e Arquivos
 
