@@ -6,7 +6,44 @@ Este projeto implementa um programa em C para calcular a inflação do RTT (Roun
 
 A estrutura do projeto é organizada da seguinte forma:
 
-├── .gitignore ├── .vscode/ │ ├── settings.json │ ├── tasks.json ├── answer/ │ ├── N10_S3_C3_M3-solution.txt │ ├── N100_S20_C30_M5-solution.txt │ ├── N1000_S50_C300_M10-solution.txt │ ├── N10000_S50_C300_M10-solution.txt │ ├── N5.txt ├── headers/ │ ├── edge.h │ ├── forward_list.h │ ├── graph.h │ ├── item.h │ ├── pq.h │ ├── rede.h │ ├── vertex.h ├── input/ │ ├── N10_S3_C3_M3.txt │ ├── N100_S20_C30_M5.txt │ ├── N1000_S50_C300_M10.txt │ ├── N10000_S50_C300_M10.txt │ ├── N5.txt ├── main.c ├── makefile ├── objects/ │ ├── edge.o │ ├── forward_list.o │ ├── graph.o │ ├── item.o │ ├── main.o │ ├── pq.o │ ├── rede.o │ ├── vertex.o ├── output/ │ ├── N10000.txt ├── source/ │ ├── (outros arquivos fonte .c) ├── trab2
+├── .gitignore
+├── input/ 
+│ ├── N10_S3_C3_M3.txt 
+│ ├── N100_S20_C30_M5.txt 
+│ ├── N1000_S50_C300_M10.txt 
+│ ├── N10000_S50_C300_M10.txt 
+│ ├── N5.txt 
+├── output/ 
+│ ├── (arquivos de saída)
+├── headers/ 
+│ ├── edge.h 
+│ ├── forward_list.h 
+│ ├── graph.h 
+│ ├── item.h 
+│ ├── pq.h 
+│ ├── rede.h 
+│ ├── vertex.h 
+├── objects/ 
+│ ├── edge.o 
+│ ├── forward_list.o 
+│ ├── graph.o 
+│ ├── item.o 
+│ ├── main.o 
+│ ├── pq.o 
+│ ├── rede.o 
+│ ├── vertex.o 
+├── source/
+│ ├── edge.c 
+│ ├── forward_list.c 
+│ ├── graph.c 
+│ ├── item.c 
+│ ├── main.c
+│ ├── pq.c
+│ ├── rede.c
+│ ├── vertex.c
+├── main.c 
+├── makefile 
+├── trab2
 
 ### Descrição dos Diretórios e Arquivos
 
