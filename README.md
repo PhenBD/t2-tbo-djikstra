@@ -6,6 +6,7 @@ Este projeto implementa um programa em C para calcular a inflação do RTT (Roun
 
 A estrutura do projeto é organizada da seguinte forma:
 
+```
 ├── .gitignore
 ├── input/ 
 │ ├── N10_S3_C3_M3.txt 
@@ -44,6 +45,7 @@ A estrutura do projeto é organizada da seguinte forma:
 ├── main.c 
 ├── makefile 
 └── trab2
+```
 
 ### Descrição dos Diretórios e Arquivos
 
